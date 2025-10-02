@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block title %}Add Book - Library Management{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <div class="card shadow">
+            <div class="card-header bg-primary text-white">
+                <h3 class="mb-0">
+                    <i class="bi bi-plus-circle"></i> Add New Book
+                </h3>
+            </div>
+            <div class="card-body">
+                <form id="addBookForm" method="POST" action="{{ url_for('add_book') }}">
+                    <div class="mb-3">
+                        <label for="title" class="form-label">Book Title <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="title" name="title" 
+                               placeholder="Enter book title" required>
+                        <div class="invalid-feedback">
+                            Please enter a book title.
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="author" class="form-label">Author <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="author" name="author" 
+                               placeholder="Enter author name" required>
+                        <div class="invalid-feedback">
+                            Please enter the author name.
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="isbn" class="form-label">ISBN <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="isbn" name="isbn" 
+                               placeholder="Enter ISBN (e.g., 978-0061120084)" required>
+                        <div class="invalid-feedback">
+                            Please enter a valid ISBN.
+                        </div>
+                        <small class="form-text text-muted">Format: 978-XXXXXXXXXX</small>
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            <i class="bi bi-check-circle"></i> Add Book
+                        </button>
+                        <a href="{{ url_for('index') }}" class="btn btn-secondary">
+                            <i class="bi bi-x-circle"></i> Cancel
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Help Section -->
+        <div class="alert alert-info mt-4">
+            <h5><i class="bi bi-info-circle"></i> Instructions:</h5>
+            <ul class="mb-0">
+                <li>All fields marked with <span class="text-danger">*</span> are required.</li>
+                <li>Enter the complete book title and author name.</li>
+                <li>ISBN should be in the format: 978-XXXXXXXXXX</li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}
