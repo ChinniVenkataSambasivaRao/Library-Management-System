@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+
+{% block title %}Return Book - Library Management{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <div class="card shadow">
+            <div class="card-header bg-warning text-dark">
+                <h3 class="mb-0">
+                    <i class="bi bi-arrow-up-circle"></i> Return a Book
+                </h3>
+            </div>
+            <div class="card-body">
+                {% if books %}
+                    <form id="returnBookForm" method="POST" action="{{ url_for('return_book') }}">
+                        <div class="mb-3">
+                            <label for="book_id" class="form-label">Select Book to Return <span class="text-danger">*</span></label>
+                            <select class="form-select" id="book_id" name="book_id" required>
+                                <option value="">-- Choose a book --</option>
+                                {% for book in books %}
+                                    <option value="{{ book.id }}" data-borrower="{{ book.borrowed_by }}" data-date="{{ book.borrowed_date }}">
+                                        {{ book.title }} by {{ book.author }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                            <div class="invalid-feedback">
+                                Please select a book to return.
+                            </div>
+                        </div>
+
+                        <!-- Book Details Display -->
+                        <div id="bookDetails" class="alert alert-info d-none">
+                            <h6><i class="bi bi-info-circle"></i> Book Details:</h6>
+                            <p class="mb-1"><strong>Borrowed by:</strong> <span id="borrowerName"></span></p>
+                            <p class="mb-0"><strong>Borrowed on:</strong> <span id="borrowDate"></span></p>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-warning btn-lg">
+                                <i class="bi bi-check-circle"></i> Return Book
+                            </button>
+                            <a href="{{ url_for('index') }}" class="btn btn-secondary">
+                                <i class="bi bi-x-circle"></i> Cancel
+                            </a>
+                        </div>
+                    </form>
+                {% else %}
+                    <div class="alert alert-info">
+                        <i class="bi bi-info-circle"></i> 
+                        <strong>No borrowed books!</strong> All books are currently in the library.
+                    </div>
+                    <a href="{{ url_for('index') }}" class="btn btn-primary">
+                        <i class="bi bi-house-door"></i> Back to Home
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Borrowed Books List -->
+        {% if books %}
+        <div class="card mt-4 shadow-sm">
+            <div class="card-header bg-light">
+                <h5 class="mb-0"><i class="bi bi-list-ul"></i> Borrowed Books ({{ books|length }})</h5>
+            </div>
+            <div class="card-body">
+                <div class="list-group">
+                    {% for book in books %}
+                        <div class="list-group-item">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h6 class="mb-1">{{ book.title }}</h6>
+                                <small class="text-warning">Borrowed</small>
+                            </div>
+                            <p class="mb-1"><small>by {{ book.author }}</small></p>
+                            <small class="text-muted">
+                                Borrowed by: {{ book.borrowed_by }} on {{ book.borrowed_date }}
+                            </small>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Show book details when a book is selected
+    $('#book_id').on('change', function() {
+        const selectedOption = $(this).find('option:selected');
+        const borrower = selectedOption.data('borrower');
+        const date = selectedOption.data('date');
+        
+        if (borrower && date) {
+            $('#borrowerName').text(borrower);
+            $('#borrowDate').text(date);
+            $('#bookDetails').removeClass('d-none');
+        } else {
+            $('#bookDetails').addClass('d-none');
+        }
+    });
+</script>
+{% endblock %}
