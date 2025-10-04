@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block title %}Transaction History - Library Management{% endblock %}
+
+{% block content %}
+<header class="text-center mb-4">
+    <h1 class="display-5">
+        <i class="bi bi-clock-history text-primary"></i> Transaction History
+    </h1>
+    <p class="text-muted">View all library transactions</p>
+</header>
+
+<div class="row justify-content-center">
+    <div class="col-lg-10">
+        <div class="card shadow">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0"><i class="bi bi-list-ul"></i> All Transactions</h4>
+            </div>
+            <div class="card-body">
+                {% if transactions %}
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>#</th>
+                                    <th>Action</th>
+                                    <th>Book Title</th>
+                                    <th>User</th>
+                                    <th>Date & Time</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for transaction in transactions %}
+                                <tr>
+                                    <td>{{ loop.index }}</td>
+                                    <td>
+                                        {% if transaction.action == 'Added' %}
+                                            <span class="badge bg-primary">
+                                                <i class="bi bi-plus-circle"></i> {{ transaction.action }}
+                                            </span>
+                                        {% elif transaction.action == 'Borrowed' %}
+                                            <span class="badge bg-success">
+                                                <i class="bi bi-arrow-down-circle"></i> {{ transaction.action }}
+                                            </span>
+                                        {% elif transaction.action == 'Returned' %}
+                                            <span class="badge bg-warning text-dark">
+                                                <i class="bi bi-arrow-up-circle"></i> {{ transaction.action }}
+                                            </span>
+                                        {% endif %}
+                                    </td>
+                                    <td><strong>{{ transaction.book_title }}</strong></td>
+                                    <td>{{ transaction.user }}</td>
+                                    <td>{{ transaction.date }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <div class="alert alert-info text-center">
+                        <i class="bi bi-info-circle"></i> No transactions recorded yet.
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Back Button -->
+        <div class="text-center mt-4">
+            <a href="{{ url_for('index') }}" class="btn btn-primary btn-lg">
+                <i class="bi bi-house-door"></i> Back to Home
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

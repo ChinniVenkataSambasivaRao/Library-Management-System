@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block title %}Success - Library Management{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <div class="card shadow text-center">
+            <div class="card-body py-5">
+                <!-- Success Icon -->
+                <div class="success-icon mb-4">
+                    <i class="bi bi-check-circle-fill text-success" style="font-size: 5rem;"></i>
+                </div>
+
+                <!-- Success Message -->
+                <h2 class="text-success mb-3">Success!</h2>
+                
+                {% if action == 'added' %}
+                    <p class="lead">The book <strong>"{{ book_title }}"</strong> has been successfully added to the library.</p>
+                {% elif action == 'borrowed' %}
+                    <p class="lead">You have successfully borrowed <strong>"{{ book_title }}"</strong>.</p>
+                    <p class="text-muted">Please return it on time!</p>
+                {% elif action == 'returned' %}
+                    <p class="lead">The book <strong>"{{ book_title }}"</strong> has been successfully returned.</p>
+                    <p class="text-muted">Thank you for returning on time!</p>
+                {% else %}
+                    <p class="lead">Your action has been completed successfully!</p>
+                {% endif %}
+
+                <!-- Action Buttons -->
+                <div class="mt-4">
+                    <a href="{{ url_for('index') }}" class="btn btn-primary btn-lg me-2">
+                        <i class="bi bi-house-door"></i> Back to Home
+                    </a>
+                    
+                    {% if action == 'added' %}
+                        <a href="{{ url_for('add_book') }}" class="btn btn-outline-primary btn-lg">
+                            <i class="bi bi-plus-circle"></i> Add Another
+                        </a>
+                    {% elif action == 'borrowed' %}
+                        <a href="{{ url_for('borrow_book') }}" class="btn btn-outline-success btn-lg">
+                            <i class="bi bi-arrow-down-circle"></i> Borrow Another
+                        </a>
+                    {% elif action == 'returned' %}
+                        <a href="{{ url_for('return_book') }}" class="btn btn-outline-warning btn-lg">
+                            <i class="bi bi-arrow-up-circle"></i> Return Another
+                        </a>
+                    {% endif %}
+                </div>
+
+                <!-- View Transactions Link -->
+                <div class="mt-4">
+                    <a href="{{ url_for('view_transactions') }}" class="text-muted">
+                        <i class="bi bi-clock-history"></i> View Transaction History
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Animated Success Message -->
+        <div class="text-center mt-4">
+            <div class="alert alert-success fade-in">
+                <i class="bi bi-info-circle"></i> Your transaction has been recorded in the system.
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
